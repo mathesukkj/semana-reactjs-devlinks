@@ -3,10 +3,13 @@ import { Logo } from "../../components/Logo";
 import { useState } from "react";
 import { auth } from "../../services/firebaseConnection";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const navigate = useNavigate();
 
     function handleLogin(e) {
         e.preventDefault();
@@ -16,10 +19,10 @@ export default function Login() {
         }
         signInWithEmailAndPassword(auth, email, password)
             .then(() => {
-                console.log("LOGADO COM SUCCESO");
+                navigate("/admin", { replace: true });
             })
             .catch(() => {
-                console.log("ERRO NO LOGIN");
+                alert("ERRO NO LOGIN");
             });
     }
 
