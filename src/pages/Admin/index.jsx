@@ -5,6 +5,17 @@ import { Logo } from "../../components/Logo";
 import { Input } from "../../components/Input";
 import { MdAddLink } from "react-icons/md";
 import { FiTrash2 } from "react-icons/fi";
+import { db } from "../../services/firebaseConnection";
+import {
+    addDoc,
+    collection,
+    onSnapshot,
+    query,
+    orderBy,
+    doc,
+    deleteDoc,
+} from "firebase/firestore";
+import { toast } from "react-toastify";
 
 export default function Admin() {
     const [nameInput, setNameInput] = useState("");
@@ -12,24 +23,48 @@ export default function Admin() {
     const [backgroundColorInput, setBackgroundColorInput] = useState("#F1f1f1");
     const [textColorInput, setTextColorInput] = useState("#121212");
 
+    async function handleRegister(e) {
+        e.preventDefault();
+        if (nameInput === "" || urlInput === "") {
+            toast.warn("Preencha todos os campos!");
+            return;
+        }
+        addDoc(collection(db, "links"), {
+            name: nameInput,
+            url: urlInput,
+            bg: backgroundColorInput,
+            color: textColorInput,
+            created: new Date(),
+        })
+            .then(() => {
+                setNameInput("");
+                setUrlInput("");
+                toast.success("Link registrado com sucesso!");
+            })
+            .catch((error) => {
+                toast.warn("Erro ao registrar!");
+                console.log("ERRO: " + error);
+            });
+    }
+
     return (
         <div className="container">
             <Header />
             <Logo />
 
-            <form className="form">
+            <form className="form" onSubmit={handleRegister}>
                 <label className="label">Nome do link</label>
                 <Input
                     placeholder="Digite o link..."
                     value={nameInput}
-                    onchange={(e) => setNameInput(e.target.value)}
+                    onChange={(e) => setNameInput(e.target.value)}
                 />
                 <label className="label">URL do link</label>
                 <Input
                     type="url"
                     placeholder="Digite a url..."
                     value={urlInput}
-                    onchange={(e) => setUrlInput(e.target.value)}
+                    onChange={(e) => setUrlInput(e.target.value)}
                 />
 
                 <section className="container-colors">
@@ -38,7 +73,7 @@ export default function Admin() {
                         <input
                             type="color"
                             value={backgroundColorInput}
-                            onchange={(e) =>
+                            onChange={(e) =>
                                 setBackgroundColorInput(e.target.value)
                             }
                         />
@@ -48,10 +83,26 @@ export default function Admin() {
                         <input
                             type="color"
                             value={textColorInput}
-                            onchange={(e) => setTextColorInput(e.target.value)}
+                            onChange={(e) => setTextColorInput(e.target.value)}
                         />
                     </div>
                 </section>
+
+                {nameInput !== "" && (
+                    <div className="preview">
+                        <label className="label">Veja como está ficando</label>
+                        <article
+                            className="list"
+                            style={{
+                                marginTop: 6,
+                                marginBottom: 8,
+                                backgroundColor: backgroundColorInput,
+                            }}
+                        >
+                            <p style={{ color: textColorInput }}>{nameInput}</p>
+                        </article>
+                    </div>
+                )}
 
                 <button className="btn-register" type="submit">
                     Cadastrar <MdAddLink size={24} color="FFF" />
