@@ -2,11 +2,19 @@ import "./home.css";
 import { Social } from "../../components/Social";
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import { useState, useEffect } from "react";
-import { getDocs, collection, orderBy, query } from "firebase/firestore";
+import {
+    getDocs,
+    collection,
+    orderBy,
+    query,
+    doc,
+    getDoc,
+} from "firebase/firestore";
 import { db } from "../../services/firebaseConnection";
 
 export default function Home() {
     const [links, setLinks] = useState([]);
+    const [socialLinks, setSocialLinks] = useState({});
 
     useEffect(() => {
         function loadLinks() {
@@ -32,6 +40,22 @@ export default function Home() {
         loadLinks();
     }, []);
 
+    useEffect(() => {
+        function loadSocialLinks() {
+            const docRef = doc(db, "social", "link");
+            getDoc(docRef).then((snapshot) => {
+                if (snapshot.data() !== undefined) {
+                    setSocialLinks({
+                        linkedin: snapshot.data().linkedin,
+                        github: snapshot.data().github,
+                        instagram: snapshot.data().instagram,
+                    });
+                }
+            });
+        }
+        loadSocialLinks();
+    }, []);
+
     return (
         <div className="container">
             <h1>Mathesu</h1>
@@ -54,17 +78,19 @@ export default function Home() {
                     </section>
                 ))}
 
-                <footer>
-                    <Social url="https://www.linkedin.com/in/matheus-kemuel/">
-                        <FaLinkedin size={30} color="#FFF" />
-                    </Social>
-                    <Social url="https://github.com/mathesukkj">
-                        <FaGithub size={30} color="#FFF" />
-                    </Social>
-                    <Social url="https://www.instagram.com/mathesukkkkj/">
-                        <FaInstagram size={30} color="#FFF" />
-                    </Social>
-                </footer>
+                {links.length !== 0 && Object.keys(socialLinks).length > 0 && (
+                    <footer>
+                        <Social url={socialLinks?.linkedin}>
+                            <FaLinkedin size={30} color="#FFF" />
+                        </Social>
+                        <Social url={socialLinks?.github}>
+                            <FaGithub size={30} color="#FFF" />
+                        </Social>
+                        <Social url={socialLinks?.instagram}>
+                            <FaInstagram size={30} color="#FFF" />
+                        </Social>
+                    </footer>
+                )}
             </main>
         </div>
     );
