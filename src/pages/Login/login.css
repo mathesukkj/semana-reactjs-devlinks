@@ -21,4 +21,14 @@
     border: 0;
     color: #fff;
     font-size: 18px;
+    font-family: Poppins;
+}
+
+@media screen and (max-width: 600px) {
+    .form {
+        align-items: center;
+    }
+    .form button {
+        width: 90%;
+    }
 }

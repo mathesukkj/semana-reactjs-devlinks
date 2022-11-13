@@ -73,3 +73,12 @@
         transform: scale(1, 1);
     }
 }
+
+@media screen and (max-width: 600px) {
+    .list {
+        padding: 7px 8px;
+    }
+    .logo > span {
+        margin-left: -5px;
+    }
+}

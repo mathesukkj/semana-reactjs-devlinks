@@ -5,4 +5,12 @@
     border-radius: 4px;
     padding: 0 8px;
     outline: none;
+    font-family: Poppins;
+}
+
+@media screen and (max-width: 600px) {
+    .form-input {
+        width: 90%;
+        
+    }
 }
