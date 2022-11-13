@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    padding: 0 6px;
+    padding: 0 6px 24px 6px;
 }
 .label {
     color: #FFF;
@@ -40,6 +40,7 @@
     justify-content: space-between;
     border-radius: 4px;
     padding: 14px 8px;
+    margin-bottom: 15px;
     background-color: rgba(36, 36, 36, 0.35);
 }
 .btn-delete {
