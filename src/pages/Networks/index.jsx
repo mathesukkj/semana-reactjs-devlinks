@@ -6,6 +6,7 @@ import { MdAddLink } from "react-icons/md";
 
 import { db } from "../../services/firebaseConnection";
 import { setDoc, doc, getDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 export default function Networks() {
     const [linkedin, setLinkedin] = useState();
@@ -32,7 +33,13 @@ export default function Networks() {
             linkedin: linkedin,
             github: github,
             instagram: instagram,
-        });
+        })
+            .then(() => {
+                toast.success("Salvo com sucesso!");
+            })
+            .catch(() => {
+                toast.error("Erro ao salvar!");
+            });
     }
 
     return (
