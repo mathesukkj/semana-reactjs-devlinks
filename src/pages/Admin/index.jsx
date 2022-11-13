@@ -68,6 +68,11 @@ export default function Admin() {
             });
     }
 
+    async function handleDeleteLink(id) {
+        const docRef = doc(db, "links", id);
+        await deleteDoc(docRef);
+    }
+
     return (
         <div className="container">
             <Header />
