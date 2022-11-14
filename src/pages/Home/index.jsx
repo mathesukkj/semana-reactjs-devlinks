@@ -1,5 +1,5 @@
 import "./home.css";
-import { Social } from "../../components/Social";
+import { Social } from "../../components/social";
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import {
